@@ -1,0 +1,52 @@
+.filter__box {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: #313131;
+    padding: 34px;
+    border-radius: 12px;
+}
+
+.active__box {
+    display: block;
+}
+
+.filter__list {
+    color: white;
+    display: flex;
+    gap: 28px;
+    height: max-content;
+    max-height: 237px;
+    overflow-y: auto;
+    flex-direction: column;
+    width: max-content;
+    padding-right: 24px;
+    /* max-width: 248px; */
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: rgba(75, 73, 73, 1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: white;
+    }
+}
+
+
+.filter__p {
+    cursor: pointer;
+}
+
+.filter__p:hover {
+    color: #B672FF;
+}
+
+.active {
+    color: #B672FF;
+    border-bottom: 1px solid #B672FF;
+}
