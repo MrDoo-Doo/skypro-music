@@ -26,10 +26,11 @@
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
+    cursor: pointer;
 }
 
 .nav__menu {
-    display: block;
+    display: none;
     visibility: visible;
 }
 
@@ -47,6 +48,7 @@
 }
 
 .menu__list {
+    list-style-type: none;
     padding: 18px 0 10px 0;
 }
 
@@ -60,4 +62,8 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
+}
+
+.active_menu {
+    display: block;
 }
