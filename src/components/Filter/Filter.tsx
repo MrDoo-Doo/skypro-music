@@ -14,8 +14,6 @@ export default function Filter() {
       setActiveFilter(filterName);
     }
   };
-
-  console.log(activeFilter);
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
