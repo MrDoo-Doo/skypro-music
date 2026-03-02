@@ -6,16 +6,17 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import {
+  setCurrentPlaylist,
   setCurrentTrack,
   setIsPlay,
-  setUrlIcon,
 } from '@/store/features/trackSlice';
 
 type trackTypeProp = {
   track: TrackType;
+  playlist: TrackType[];
 };
 
-export default function Track({ track }: trackTypeProp) {
+export default function Track({ track, playlist }: trackTypeProp) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
@@ -23,12 +24,12 @@ export default function Track({ track }: trackTypeProp) {
   const onClickTrack = () => {
     if (track._id === currentTrack?._id && isPlay) {
       dispatch(setCurrentTrack(track));
+      dispatch(setCurrentPlaylist(playlist));
       dispatch(setIsPlay(false));
-      dispatch(setUrlIcon('/img/icon/sprite.svg#icon-play'));
     } else {
       dispatch(setCurrentTrack(track));
+      dispatch(setCurrentPlaylist(playlist));
       dispatch(setIsPlay(true));
-      dispatch(setUrlIcon('/img/icon/sprite.svg#icon-pause'));
     }
   };
 
