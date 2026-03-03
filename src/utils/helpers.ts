@@ -26,3 +26,12 @@ export function formatTime(time: number) {
   const secondsFormat = seconds < 10 ? `0${seconds}` : seconds;
   return `${minuts}:${secondsFormat}`;
 }
+
+export const getTimePanel = (
+  currentTime: number,
+  totalTime: number | undefined,
+) => {
+  if (totalTime) {
+    return `${formatTime(currentTime)} / ${formatTime(totalTime)}`;
+  }
+};
