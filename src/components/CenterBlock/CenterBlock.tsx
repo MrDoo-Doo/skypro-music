@@ -1,11 +1,9 @@
-import Link from 'next/link';
 import cn from 'classnames';
 import styles from './centerblock.module.css';
 import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
 import Track from '@/components/Track/Track';
 import { data } from '@/data';
-import { formatTime } from '@/utils/helpers';
 
 export default function CenterBlock() {
   return (

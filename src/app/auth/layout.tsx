@@ -1,0 +1,19 @@
+import styles from './layout.module.css';
+import { ReactNode } from 'react';
+
+interface AuthLayoutProps {
+  children: ReactNode;
+}
+export default function Layout({ children }: AuthLayoutProps) {
+  return (
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.containerEnter}>
+          <div className={styles.modal__block}>
+            <form className={styles.modal__form}>{children}</form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
