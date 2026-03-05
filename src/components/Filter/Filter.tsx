@@ -3,9 +3,14 @@ import styles from './filter.module.css';
 import cn from 'classnames';
 import FilterItem from '@/components/FilterItem/FilterItem';
 import { useState } from 'react';
+import { TrackType } from '@/sharedTypes/sharedTypes';
 // import { MouseEventHandler } from 'react';
 
-export default function Filter() {
+type DataTracks = {
+  tracks: TrackType[];
+};
+
+export default function Filter({ tracks }: DataTracks) {
   const [activeFilter, setActiveFilter] = useState('');
   const handleClick = (filterName: string) => {
     if (activeFilter === filterName) {
@@ -25,7 +30,7 @@ export default function Filter() {
       >
         исполнителю
         <div onClick={(e) => e.stopPropagation()}>
-          <FilterItem display={activeFilter} filter="author" />
+          <FilterItem tracks={tracks} display={activeFilter} filter="author" />
         </div>
       </div>
       <div
@@ -36,7 +41,11 @@ export default function Filter() {
       >
         году выпуска
         <div onClick={(e) => e.stopPropagation()}>
-          <FilterItem display={activeFilter} filter="release_date" />
+          <FilterItem
+            tracks={tracks}
+            display={activeFilter}
+            filter="release_date"
+          />
         </div>
       </div>
       <div
@@ -47,7 +56,7 @@ export default function Filter() {
       >
         жанру
         <div onClick={(e) => e.stopPropagation()}>
-          <FilterItem display={activeFilter} filter="genre" />
+          <FilterItem tracks={tracks} display={activeFilter} filter="genre" />
         </div>
       </div>
     </div>
