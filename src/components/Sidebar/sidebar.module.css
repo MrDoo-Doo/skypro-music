@@ -37,9 +37,14 @@
     cursor: pointer;
 }
 
+.sidebar__iconSvg {
+    width: 43px;
+    height: 43px;
+}
+
 .sidebar__block {
-    height: 100%;
-    padding: 240px 0 0 0;
+    /* height: 100%; */
+    padding: 240px 0 10px 0;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

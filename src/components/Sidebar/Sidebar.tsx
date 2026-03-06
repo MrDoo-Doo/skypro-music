@@ -8,7 +8,7 @@ export default function Sidebar() {
       <div className={styles.sidebar__personal}>
         <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
         <div className={styles.sidebar__icon}>
-          <svg>
+          <svg className={styles.sidebar__iconSvg}>
             <use xlinkHref="/img/icon/sprite.svg#logout"></use>
           </svg>
         </div>

@@ -58,7 +58,13 @@ export default function Signin() {
     <>
       <a href="/music/main">
         <div className={styles.modal__logo}>
-          <Image src="/img/logo_modal.png" alt="logo" />
+          <Image
+            className={styles.modal__logo}
+            src="/img/logo_modal.png"
+            alt="logo"
+            width={140}
+            height={21}
+          />
         </div>
       </a>
       <input

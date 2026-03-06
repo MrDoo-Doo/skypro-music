@@ -4,8 +4,10 @@ import Image from 'next/image';
 import styles from './navigate.module.css';
 import cn from 'classnames';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Navigate() {
+  const router = useRouter();
   const [statusMenu, setStatusMenu] = useState('close');
   const handleClickMenu = () => {
     if (statusMenu === 'open') {
@@ -14,9 +16,13 @@ export default function Navigate() {
       setStatusMenu('open');
     }
   };
+
+  const reloadMain = () => {
+    router.push('/');
+  };
   return (
     <nav className={styles.main__nav}>
-      <div className={styles.nav__logo}>
+      <div className={styles.nav__logo} onClick={reloadMain}>
         <Image
           width={250}
           height={170}
@@ -47,7 +53,7 @@ export default function Navigate() {
             </Link>
           </li>
           <li className={styles.menu__item}>
-            <Link href="../signin.html" className={styles.menu__link}>
+            <Link href="/auth/signin" className={styles.menu__link}>
               Войти
             </Link>
           </li>
