@@ -63,7 +63,7 @@ export default function SignUp() {
     <>
       <Link href="/music/main">
         <div className={styles.modal__logo}>
-          <Image src="/img/logo_modal.png" alt="logo" />
+          <Image src="/img/logo_modal.png" alt="logo" width={140} height={21} />
         </div>
       </Link>
       <input

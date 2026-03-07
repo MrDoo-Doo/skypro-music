@@ -9,8 +9,15 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 import cn from 'classnames';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/store/store';
+import {
+  setEmailUser,
+  setNameUser,
+  setIdUser,
+} from '@/store/features/userSlice';
 
 export default function Signin() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,7 +43,13 @@ export default function Signin() {
 
     authUser({ email, password })
       .then((res) => {
-        console.log(res);
+        localStorage.setItem('userData', JSON.stringify(res.data.username));
+        const dataFromLS = localStorage.getItem('userData');
+        if (dataFromLS) {
+          const parseData: string = JSON.parse(dataFromLS);
+          // console.log(parseData);
+          dispatch(setNameUser(parseData));
+        }
         router.push('/music/main');
       })
       .catch((error) => {
@@ -58,13 +71,7 @@ export default function Signin() {
     <>
       <a href="/music/main">
         <div className={styles.modal__logo}>
-          <Image
-            className={styles.modal__logo}
-            src="/img/logo_modal.png"
-            alt="logo"
-            width={140}
-            height={21}
-          />
+          <Image src="/img/logo_modal.png" alt="logo" width={140} height={21} />
         </div>
       </a>
       <input
