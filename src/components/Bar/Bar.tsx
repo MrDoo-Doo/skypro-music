@@ -59,7 +59,7 @@ export default function Bar() {
   };
 
   const onLoadStart = () => {
-    setIsLoadedTrack(true);
+    // setIsLoadedTrack(true);
   };
 
   const onChangeProgress = (

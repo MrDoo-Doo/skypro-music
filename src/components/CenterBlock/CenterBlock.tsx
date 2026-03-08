@@ -1,18 +1,25 @@
-import Link from 'next/link';
 import cn from 'classnames';
 import styles from './centerblock.module.css';
 import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
 import Track from '@/components/Track/Track';
-import { data } from '@/data';
-import { formatTime } from '@/utils/helpers';
+import { TrackType } from '@/sharedTypes/sharedTypes';
+// import { data } from '@/data';
 
-export default function CenterBlock() {
+type DataTracks = {
+  tracks: TrackType[];
+  title: string;
+};
+
+export default function CenterBlock({ tracks, title }: DataTracks) {
+  // if (!tracks || !tracks.length) {
+  //   return <div>Загрузка треков...</div>;
+  // }
   return (
     <div className={styles.centerblock}>
       <Search />
-      <h2 className={styles.centerblock__h2}>Треки</h2>
-      <Filter />
+      <h2 className={styles.centerblock__h2}>{title}</h2>
+      <Filter tracks={tracks} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={cn(styles.playlistTitle__col, styles.col01)}>
@@ -31,9 +38,15 @@ export default function CenterBlock() {
           </div>
         </div>
         <div className={styles.content__playlist}>
-          {data.map((track) => (
-            <Track track={track} key={track._id} playlist={data} />
-          ))}
+          {!tracks || !tracks.length ? (
+            <div style={{ color: 'white', fontSize: '24px' }}>
+              Загрузка треков...
+            </div>
+          ) : (
+            tracks.map((track) => (
+              <Track track={track} key={track._id} playlist={tracks} />
+            ))
+          )}
         </div>
       </div>
     </div>

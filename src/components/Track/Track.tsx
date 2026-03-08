@@ -55,9 +55,7 @@ export default function Track({ track, playlist }: trackTypeProp) {
                   [styles.playing_dot]: isPlay,
                 },
               )}
-            >
-              <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
-            </div>
+            ></div>
           </div>
           <div className="track__title-text">
             <Link className={styles.track__titleLink} href="">
