@@ -40,8 +40,7 @@ export default function SignUp() {
     setLoading(true);
 
     regUser({ email, password, username })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         router.push('/auth/signin');
       })
       .catch((error) => {

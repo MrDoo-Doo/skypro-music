@@ -4,9 +4,12 @@ import Image from 'next/image';
 import styles from './navigate.module.css';
 import cn from 'classnames';
 import { useState } from 'react';
+import { useAppDispatch } from '@/store/store';
 import { useRouter } from 'next/navigation';
+import { clearUserData } from '@/store/features/userSlice';
 
 export default function Navigate() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const [statusMenu, setStatusMenu] = useState('close');
   const handleClickMenu = () => {
@@ -20,6 +23,12 @@ export default function Navigate() {
   const reloadMain = () => {
     router.push('/');
   };
+
+  const logout = () => {
+    dispatch(clearUserData());
+    router.push('/auth/signin');
+  };
+
   return (
     <nav className={styles.main__nav}>
       <div className={styles.nav__logo} onClick={reloadMain}>
@@ -53,9 +62,9 @@ export default function Navigate() {
             </Link>
           </li>
           <li className={styles.menu__item}>
-            <Link href="/auth/signin" className={styles.menu__link}>
-              Войти
-            </Link>
+            <p className={styles.menu__link} onClick={logout}>
+              Выйти
+            </p>
           </li>
         </ul>
       </div>

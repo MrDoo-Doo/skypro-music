@@ -7,8 +7,13 @@ type selectionResponse = {
   name: string;
 };
 
+type selectionResponseData = {
+  data: selectionResponse;
+};
+
 export const getTracks = (): Promise<TrackType[]> => {
   return axios(BASE_URL + '/catalog/track/all/').then((res) => {
+    // return res.data;
     return res.data.data;
   });
 };
@@ -19,8 +24,11 @@ export const getTracks = (): Promise<TrackType[]> => {
 //     return res.data.data.items;
 //   });
 // };
-export const getSelectionTracks = (id: string): Promise<selectionResponse> => {
+export const getSelectionTracks = (
+  id: string,
+): Promise<selectionResponseData> => {
   return axios(BASE_URL + `/catalog/selection/${id}/`).then((res) => {
-    return res.data.data;
+    return res.data;
+    // return res.data.data;
   });
 };
