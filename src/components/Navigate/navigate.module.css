@@ -69,3 +69,7 @@
 .active_menu {
     display: block;
 }
+
+.hide {
+    display: none;
+}

@@ -10,10 +10,9 @@ export const useDataUserHook = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const username = localStorage.getItem('userName') || '';
+    const username = localStorage.getItem('userName') || 'Anonim';
     const access = localStorage.getItem('tokenAccess') || '';
     const refresh = localStorage.getItem('tokenRefresh') || '';
-    console.log(username);
 
     dispatch(setNameUser(username));
     dispatch(setTokenAccess(access));

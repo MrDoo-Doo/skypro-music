@@ -39,7 +39,7 @@ const userSlice = createSlice({
       localStorage.setItem('tokenRefresh', action.payload);
     },
     clearUserData: (state) => {
-      state.username = '';
+      state.username = 'Anonim';
       state.access = '';
       state.refresh = '';
       localStorage.removeItem('userName');

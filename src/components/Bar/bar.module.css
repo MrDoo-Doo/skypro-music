@@ -254,8 +254,16 @@
     stroke: #696969;
 }
 
+.trackPlay__likeSvgActive {
+    width: 14px;
+    height: 12px;
+    stroke: #b672ff;
+    fill: #b672ff;
+}
+
 .trackPlay__dislike {
     margin-left: 28.5px;
+    display: flex;
 }
 
 .trackPlay__dislikeSvg {

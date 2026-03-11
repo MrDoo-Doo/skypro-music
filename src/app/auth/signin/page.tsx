@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { authUser, getToken, refreshToken } from '@/services/auth/authApi';
+import { authUser, getToken } from '@/services/auth/authApi';
 import styles from './signin.module.css';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -11,9 +11,7 @@ import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch } from '@/store/store';
 import {
-  setEmailUser,
   setNameUser,
-  setIdUser,
   setTokenAccess,
   setTokenRefresh,
 } from '@/store/features/userSlice';
@@ -48,9 +46,9 @@ export default function Signin() {
         return getToken({ email, password });
       })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         // localStorage.setItem('userData', JSON.stringify(res.data.username));
-        console.log('Заполните все поля', res.data.access);
+        // console.log('Заполните все поля', res.data.access);
         dispatch(setTokenAccess(res.data.access));
         dispatch(setTokenRefresh(res.data.refresh));
         // const dataFromLS = localStorage.getItem('userData');

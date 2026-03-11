@@ -2,18 +2,19 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './sidebar.module.css';
-import { useEffect } from 'react';
-import { useAppSelector } from '@/store/store';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { clearUserData } from '@/store/features/userSlice';
 
 export default function Sidebar() {
   // JSON.parse(
   // const getDataFromLS = () => {
   // setDataFromLS(localStorage.getItem('userData'));
   // let parseDataFromLS = 'Anonim';
-  // console.log(parseData);
-  console.log(useAppSelector((state) => state.user.username));
   const userName: string = useAppSelector((state) => state.user.username);
-  console.log('15:', userName);
+  // console.log(parseData);
+  // console.log(useAppSelector((state) => state.user.username));
+  // console.log('15:', userName);
   // const [parseData, setParseData] = useState<string>("");
   // // };
   //   const dataFromLS = localStorage.getItem('userData');
@@ -21,15 +22,32 @@ export default function Sidebar() {
   //   const parseDataFromLS = JSON.parse(dataFromLS);
   //   setParseData(parseDataFromLS);
   // }
+  // const [userName, setUserName] = useState('');
+  const [mounted, setMounted] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const logoutStatus = () => {
+    dispatch(clearUserData());
+  };
+
   useEffect(() => {
-    console.log(userName);
+    // console.log(userName);
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
   }, []);
-  return <p className={styles.sidebar__personalName}>{userName}</p>;
+  // return (
+  //   <p className={styles.sidebar__personalName}>
+  //     {mounted ? userName : 'Anonim'}
+  //   </p>
+  // );
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        <p className={styles.sidebar__personalName}>{'userName'}</p>
-        <div className={styles.sidebar__icon}>
+        <p className={styles.sidebar__personalName}>
+          {mounted ? userName : 'Anonim'}
+        </p>
+        <div className={styles.sidebar__icon} onClick={logoutStatus}>
           <svg className={styles.sidebar__iconSvg}>
             <use xlinkHref="/img/icon/sprite.svg#logout"></use>
           </svg>
