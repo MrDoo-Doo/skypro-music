@@ -9,12 +9,20 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 type DataTracks = {
   tracks: TrackType[];
   title: string;
+  errorRes: null | string;
+  isLoading: boolean;
 };
 
-export default function CenterBlock({ tracks, title }: DataTracks) {
+export default function CenterBlock({
+  tracks,
+  title,
+  errorRes,
+  isLoading,
+}: DataTracks) {
   // if (!tracks || !tracks.length) {
   //   return <div>Загрузка треков...</div>;
   // }
+  // console.log(tracks);
   return (
     <div className={styles.centerblock}>
       <Search />
@@ -38,15 +46,17 @@ export default function CenterBlock({ tracks, title }: DataTracks) {
           </div>
         </div>
         <div className={styles.content__playlist}>
-          {!tracks || !tracks.length ? (
-            <div style={{ color: 'white', fontSize: '24px' }}>
+          {/* {!tracks || !tracks.length ? ( */}
+          {/* <div style={{ color: 'white', fontSize: '24px' }}>
               Загрузка треков...
-            </div>
-          ) : (
-            tracks.map((track) => (
-              <Track track={track} key={track._id} playlist={tracks} />
-            ))
-          )}
+            </div>) */}
+          {errorRes
+            ? errorRes
+            : isLoading
+              ? 'Загрузка...'
+              : tracks.map((track) => (
+                  <Track track={track} key={track._id} playlist={tracks} />
+                ))}
         </div>
       </div>
     </div>

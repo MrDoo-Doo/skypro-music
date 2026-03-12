@@ -33,3 +33,27 @@ export const regUser = (data: regUserProps): Promise<userReturns> => {
     },
   });
 };
+
+type accessTokenType = {
+  access: string;
+};
+
+type refreshTokenType = {
+  refresh: string;
+};
+
+type tokenType = accessTokenType & refreshTokenType;
+
+export const getToken = (
+  data: authUserProps,
+): Promise<AxiosResponse<tokenType>> => {
+  return axios.post(BASE_URL + '/user/token/', data).then((res) => res);
+};
+
+export const refreshToken = (refresh: string): Promise<accessTokenType> => {
+  return axios
+    .post(BASE_URL + '/user/token/refresh/', {
+      refresh,
+    })
+    .then((res) => res.data);
+};

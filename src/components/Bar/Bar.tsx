@@ -14,6 +14,7 @@ import {
 } from '@/store/features/trackSlice';
 import ProgressBar from '@/components/ProgressBar/ProgressBar';
 import { getTimePanel } from '@/utils/helpers';
+import { useLikeTrack } from '@/hooks/useLikeTracks';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
@@ -26,6 +27,9 @@ export default function Bar() {
   const [progress, setProgress] = useState(0);
   const [trackTime, setTrackTime] = useState(0);
   const [isLoadedTrack, setIsLoadedTrack] = useState(false);
+
+  const { toggleLike, isLike } = useLikeTrack(currentTrack);
+  const [isLikedTrack, setIsLikedTrack] = useState(false);
 
   const playPauseTrack = () => {
     if (audioRef.current) {
@@ -83,6 +87,12 @@ export default function Bar() {
     dispatch(toggleSuffle());
   };
 
+  const onClickLike = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleLike();
+  };
+
   useEffect(() => {
     if (audioRef.current) {
       if (isPlay) {
@@ -91,7 +101,10 @@ export default function Bar() {
         audioRef.current.pause();
       }
     }
-  }, [currentTrack]);
+    setTimeout(() => {
+      setIsLikedTrack(isLike);
+    }, 0);
+  }, [currentTrack, isLike]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -108,6 +121,7 @@ export default function Bar() {
       <audio
         ref={audioRef}
         controls
+        // autoPlay={false}
         src={currentTrack?.track_file}
         loop={isLoop}
         onLoadStart={onLoadStart}
@@ -195,15 +209,24 @@ export default function Bar() {
               </div>
               <div className={styles.trackPlay__dislike}>
                 <div className={cn(styles.player__btnShuffle, styles.btnIcon)}>
-                  <svg className={styles.trackPlay__likeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
+                  <svg
+                    className={
+                      isLike
+                        ? styles.trackPlay__likeSvgActive
+                        : styles.trackPlay__likeSvg
+                    }
+                    onClick={onClickLike}
+                  >
+                    <use
+                      xlinkHref={`/img/icon/sprite.svg#${isLikedTrack ? 'icon-like' : 'icon-dislike'}`}
+                    ></use>
                   </svg>
                 </div>
-                <div className={cn(styles.trackPlay__dislike, styles.btnIcon)}>
+                {/* <div className={cn(styles.trackPlay__dislike, styles.btnIcon)}>
                   <svg className={styles.trackPlay__dislikeSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
                   </svg>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -236,3 +259,29 @@ export default function Bar() {
     </div>
   );
 }
+
+// const audioRef = React.useRef(null);
+
+// const changeAudioSource = (newSrc) => {
+//   if (audioRef.current) {
+//     // Останавливаем воспроизведение и сбрасываем прогресс
+//     audioRef.current.pause();
+//     audioRef.current.currentTime = 0;
+
+//     // Очищаем источник и любые слушатели событий
+//     audioRef.current.src = '';
+//     audioRef.current.load(); // Принудительная очистка буферов
+//   }
+
+//   // Устанавливаем новый источник
+//   audioRef.current.src = newSrc;
+//   audioRef.current.load(); // Начинаем загрузку нового файла
+// };
+
+// // Компонент
+// return (
+//   <>
+//     <button onClick={() => changeAudioSource('/path/to/new/audio.mp3')}>Change Audio Source</button>
+//     <audio ref={audioRef}></audio>
+//   </>
+// );

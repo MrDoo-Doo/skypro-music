@@ -10,6 +10,7 @@ import {
   setCurrentTrack,
   setIsPlay,
 } from '@/store/features/trackSlice';
+import { useLikeTrack } from '@/hooks/useLikeTracks';
 
 type trackTypeProp = {
   track: TrackType;
@@ -20,6 +21,7 @@ export default function Track({ track, playlist }: trackTypeProp) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
+  const { toggleLike, isLike } = useLikeTrack(track);
 
   const onClickTrack = () => {
     if (track._id === currentTrack?._id && isPlay) {
@@ -31,6 +33,12 @@ export default function Track({ track, playlist }: trackTypeProp) {
       dispatch(setCurrentPlaylist(playlist));
       dispatch(setIsPlay(true));
     }
+  };
+
+  const onClickLike = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleLike();
   };
 
   return (
@@ -74,8 +82,15 @@ export default function Track({ track, playlist }: trackTypeProp) {
           </Link>
         </div>
         <div className="track__time">
-          <svg className={styles.track__timeSvg}>
-            <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
+          <svg
+            className={
+              isLike ? styles.track__timeSvgActive : styles.track__timeSvg
+            }
+            onClick={onClickLike}
+          >
+            <use
+              xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-like' : 'icon-dislike'}`}
+            ></use>
           </svg>
           <span className={styles.track__timeText}>
             {formatTime(track.duration_in_seconds)}

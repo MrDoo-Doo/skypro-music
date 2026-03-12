@@ -63,8 +63,13 @@
     font-weight: 400;
     font-size: 16px;
     line-height: 24px;
+    cursor: pointer;
 }
 
 .active_menu {
     display: block;
+}
+
+.hide {
+    display: none;
 }
