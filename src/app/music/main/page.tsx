@@ -1,51 +1,39 @@
 'use client';
-// import './page.css';
 import CenterBlock from '@/components/CenterBlock/CenterBlock';
-import { useAppSelector } from '@/store/store';
-// import { useEffect, useState } from 'react';
-// import { TrackType } from '@/sharedTypes/sharedTypes';
-// import { getTracks } from '@/services/tracks/tracksApi';
-// import { useAppDispatch, useAppSelector } from '@/store/store';
-// import { AxiosError } from 'axios';
-// import { setNameUser } from '@/store/features/userSlice';
+import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useAppSelector, useAppDispatch } from '@/store/store';
+import { useEffect, useState } from 'react';
+import { cleanFilters } from '@/store/features/trackSlice';
 
 export default function Home() {
-  // const dispatch = useAppDispatch();
-  // const [tracks, setTracks] = useState<TrackType[]>([]);
-  // const [error, setError] = useState('');
+  const dispatch = useAppDispatch();
+  const {
+    fetchError,
+    fetchIsLoading,
+    allTracks,
+    filteredTracks,
+    filters,
+    search,
+  } = useAppSelector((state) => state.tracks);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
+  useEffect(() => {
+    dispatch(cleanFilters());
+  }, []);
 
-  const { fetchError, fetchIsLoading, allTracks } = useAppSelector(
-    (state) => state.tracks,
-  );
-  // useEffect(() => {
-  //   getTracks()
-  //     .then((res) => {
-  //       setTracks(res);
-  //       const dataFromLS = localStorage.getItem('userData');
-  //       if (dataFromLS) {
-  //         const parseData: string = JSON.parse(dataFromLS);
-  //         dispatch(setNameUser(parseData));
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       if (error instanceof AxiosError) {
-  //         if (error.response) {
-  //           setError(error.response.data);
-  //         } else if (error.request) {
-  //           setError('Неполадки с интернет-соединением');
-  //         } else {
-  //           setError('Неизвестная ошибка');
-  //         }
-  //       }
-  //     })
-  //     .finally(() => {
-  //       setError('');
-  //     });
-  // }, []);
+  useEffect(() => {
+    const currentPlaylist =
+      filters.author.length || filters.genres.length || search.length
+        ? filteredTracks
+        : allTracks;
+    setTimeout(() => {
+      setPlaylist(currentPlaylist);
+    }, 0);
+  }, [allTracks, filteredTracks]);
 
   return (
     <CenterBlock
-      tracks={allTracks}
+      tracks={playlist}
+      playlist={allTracks}
       title={'Треки'}
       errorRes={fetchError}
       isLoading={fetchIsLoading}

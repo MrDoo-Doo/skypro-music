@@ -4,10 +4,14 @@ import Search from '@/components/Search/Search';
 import Filter from '@/components/Filter/Filter';
 import Track from '@/components/Track/Track';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useEffect } from 'react';
+import { useAppDispatch } from '@/store/store';
+import { setPagePlaylist } from '@/store/features/trackSlice';
 // import { data } from '@/data';
 
 type DataTracks = {
   tracks: TrackType[];
+  playlist: TrackType[];
   title: string;
   errorRes: null | string;
   isLoading: boolean;
@@ -15,10 +19,21 @@ type DataTracks = {
 
 export default function CenterBlock({
   tracks,
+  playlist,
   title,
   errorRes,
   isLoading,
 }: DataTracks) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!errorRes && !errorRes) {
+      dispatch(setPagePlaylist(playlist));
+    }
+  }, [isLoading, errorRes]);
+  // useEffect(() => {
+  //   console.log(tracks);
+  // }, [tracks]);
   // if (!tracks || !tracks.length) {
   //   return <div>Загрузка треков...</div>;
   // }
@@ -27,7 +42,7 @@ export default function CenterBlock({
     <div className={styles.centerblock}>
       <Search />
       <h2 className={styles.centerblock__h2}>{title}</h2>
-      <Filter tracks={tracks} />
+      <Filter tracks={playlist} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={cn(styles.playlistTitle__col, styles.col01)}>
@@ -46,17 +61,21 @@ export default function CenterBlock({
           </div>
         </div>
         <div className={styles.content__playlist}>
-          {/* {!tracks || !tracks.length ? ( */}
-          {/* <div style={{ color: 'white', fontSize: '24px' }}>
+          {errorRes ? (
+            errorRes
+          ) : isLoading ? (
+            <div style={{ color: 'white', fontSize: '24px' }}>
               Загрузка треков...
-            </div>) */}
-          {errorRes
-            ? errorRes
-            : isLoading
-              ? 'Загрузка...'
-              : tracks.map((track) => (
-                  <Track track={track} key={track._id} playlist={tracks} />
-                ))}
+            </div>
+          ) : tracks.length ? (
+            tracks.map((track) => (
+              <Track track={track} key={track._id} playlist={tracks} />
+            ))
+          ) : (
+            <div style={{ color: 'white', fontSize: '24px' }}>
+              Не нашлось подходящих треков
+            </div>
+          )}
         </div>
       </div>
     </div>
