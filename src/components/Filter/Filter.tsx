@@ -5,7 +5,11 @@ import FilterItem from '@/components/FilterItem/FilterItem';
 import { useState } from 'react';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useAppDispatch } from '@/store/store';
-import { setFilterAuthor, setFilterGenre } from '@/store/features/trackSlice';
+import {
+  setFilterAuthor,
+  setFilterGenre,
+  setFilterYear,
+} from '@/store/features/trackSlice';
 // import { MouseEventHandler } from 'react';
 
 type DataTracks = {
@@ -23,6 +27,9 @@ export default function Filter({ tracks }: DataTracks) {
     }
   };
 
+  const selectYear = (year: string) => {
+    dispatch(setFilterYear(year));
+  };
   const selectAuthor = (author: string) => {
     dispatch(setFilterAuthor(author));
   };
@@ -61,7 +68,7 @@ export default function Filter({ tracks }: DataTracks) {
             tracks={tracks}
             display={activeFilter}
             filter="release_date"
-            onSelect={selectAuthor}
+            onSelect={selectYear}
           />
         </div>
       </div>

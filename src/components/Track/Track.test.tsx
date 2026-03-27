@@ -5,16 +5,16 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 import ReduxProvider from '@/store/ReduxProvider';
 import Track from './Track';
 
-const mocTracks: TrackType[] = data;
-const mocTrack: TrackType = data[0];
+const mockTracks: TrackType[] = data;
+const mockTrack: TrackType = data[0];
 
 describe('Track component', () => {
   test('Отрисовка данных трека', () => {
     render(
       <ReduxProvider>
-        <Track track={mocTrack} playlist={mocTracks} />
+        <Track track={mockTrack} playlist={mockTracks} />
       </ReduxProvider>,
     );
-    expect(screen.getAllByText(mocTrack.author).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(mockTrack.author).length).toBeGreaterThan(0);
   });
 });

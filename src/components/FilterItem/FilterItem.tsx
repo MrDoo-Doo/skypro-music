@@ -11,6 +11,7 @@ type Sort = {
   tracks: TrackType[];
   onSelect: (value: string) => void;
 };
+const year: string[] = ['По умолчанию', 'Сначала новые', 'Сначала старые'];
 
 export default function FilterItem({
   display,
@@ -18,9 +19,7 @@ export default function FilterItem({
   tracks,
   onSelect,
 }: Sort) {
-  const { fetchIsLoading, allTracks, filters } = useAppSelector(
-    (state) => state.tracks,
-  );
+  const { filters } = useAppSelector((state) => state.tracks);
   return (
     <div
       className={cn(styles.filter__box, {
@@ -29,9 +28,36 @@ export default function FilterItem({
     >
       {filter == 'release_date' ? (
         <div className={styles.filter__list}>
-          <p className={cn(styles.filter__p, styles.active)}>По умолчанию</p>
-          <p className={styles.filter__p}>Сначала новые</p>
-          <p className={styles.filter__p}>Сначала старые</p>
+          <p
+            onClick={() => {
+              onSelect(year[0]);
+            }}
+            className={cn(styles.filter__p, {
+              [styles.active]: filters.year === year[0],
+            })}
+          >
+            {year[0]}
+          </p>
+          <p
+            onClick={() => {
+              onSelect(year[1]);
+            }}
+            className={cn(styles.filter__p, {
+              [styles.active]: filters.year === year[1],
+            })}
+          >
+            {year[1]}
+          </p>
+          <p
+            onClick={() => {
+              onSelect(year[2]);
+            }}
+            className={cn(styles.filter__p, {
+              [styles.active]: filters.year === year[2],
+            })}
+          >
+            {year[2]}
+          </p>
         </div>
       ) : filter == 'author' ? (
         <div className={styles.filter__list}>

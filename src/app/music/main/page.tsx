@@ -16,13 +16,17 @@ export default function Home() {
     search,
   } = useAppSelector((state) => state.tracks);
   const [playlist, setPlaylist] = useState<TrackType[]>([]);
+
   useEffect(() => {
     dispatch(cleanFilters());
   }, []);
 
   useEffect(() => {
     const currentPlaylist =
-      filters.author.length || filters.genres.length || search.length
+      filters.author.length ||
+      filters.genres.length ||
+      search.length ||
+      filters.year !== 'По умолчанию'
         ? filteredTracks
         : allTracks;
     setTimeout(() => {

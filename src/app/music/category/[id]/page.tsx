@@ -69,7 +69,10 @@ export default function CategoryPage() {
   useEffect(() => {
     if (playlist) {
       const currentPlaylist =
-        filters.author.length || filters.genres.length || search.length
+        filters.author.length ||
+        filters.genres.length ||
+        search.length ||
+        filters.year !== 'По умолчанию'
           ? filteredTracks
           : playlist;
       setTimeout(() => {

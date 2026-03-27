@@ -7,7 +7,6 @@ import { TrackType } from '@/sharedTypes/sharedTypes';
 import { useEffect } from 'react';
 import { useAppDispatch } from '@/store/store';
 import { setPagePlaylist } from '@/store/features/trackSlice';
-// import { data } from '@/data';
 
 type DataTracks = {
   tracks: TrackType[];
@@ -31,6 +30,15 @@ export default function CenterBlock({
       dispatch(setPagePlaylist(playlist));
     }
   }, [isLoading, errorRes]);
+
+  useEffect(() => {
+    if (title === 'Избранные треки') {
+      if (playlist) {
+        console.log(playlist);
+        dispatch(setPagePlaylist(playlist));
+      }
+    }
+  }, [playlist]);
   // useEffect(() => {
   //   console.log(tracks);
   // }, [tracks]);

@@ -137,6 +137,10 @@ const trackSlice = createSlice({
 
       state.filteredTracks = applyFilters(state);
     },
+    setFilterYear: (state, action: PayloadAction<string>) => {
+      state.filters.year = action.payload;
+      state.filteredTracks = applyFilters(state);
+    },
     cleanFilters: (state) => {
       state.filteredTracks = [];
       state.filters.author = [];
@@ -164,5 +168,6 @@ export const {
   setFilterGenre,
   cleanFilters,
   searchTrack,
+  setFilterYear,
 } = trackSlice.actions;
 export const trackSliceReducer = trackSlice.reducer;
