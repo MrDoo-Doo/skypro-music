@@ -4,6 +4,12 @@ import cn from 'classnames';
 import FilterItem from '@/components/FilterItem/FilterItem';
 import { useState } from 'react';
 import { TrackType } from '@/sharedTypes/sharedTypes';
+import { useAppDispatch } from '@/store/store';
+import {
+  setFilterAuthor,
+  setFilterGenre,
+  setFilterYear,
+} from '@/store/features/trackSlice';
 // import { MouseEventHandler } from 'react';
 
 type DataTracks = {
@@ -11,6 +17,7 @@ type DataTracks = {
 };
 
 export default function Filter({ tracks }: DataTracks) {
+  const dispatch = useAppDispatch();
   const [activeFilter, setActiveFilter] = useState('');
   const handleClick = (filterName: string) => {
     if (activeFilter === filterName) {
@@ -19,6 +26,17 @@ export default function Filter({ tracks }: DataTracks) {
       setActiveFilter(filterName);
     }
   };
+
+  const selectYear = (year: string) => {
+    dispatch(setFilterYear(year));
+  };
+  const selectAuthor = (author: string) => {
+    dispatch(setFilterAuthor(author));
+  };
+  const selectGenre = (genre: string) => {
+    dispatch(setFilterGenre(genre));
+  };
+
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
@@ -30,7 +48,12 @@ export default function Filter({ tracks }: DataTracks) {
       >
         исполнителю
         <div onClick={(e) => e.stopPropagation()}>
-          <FilterItem tracks={tracks} display={activeFilter} filter="author" />
+          <FilterItem
+            tracks={tracks}
+            display={activeFilter}
+            filter="author"
+            onSelect={selectAuthor}
+          />
         </div>
       </div>
       <div
@@ -45,6 +68,7 @@ export default function Filter({ tracks }: DataTracks) {
             tracks={tracks}
             display={activeFilter}
             filter="release_date"
+            onSelect={selectYear}
           />
         </div>
       </div>
@@ -56,7 +80,12 @@ export default function Filter({ tracks }: DataTracks) {
       >
         жанру
         <div onClick={(e) => e.stopPropagation()}>
-          <FilterItem tracks={tracks} display={activeFilter} filter="genre" />
+          <FilterItem
+            tracks={tracks}
+            display={activeFilter}
+            filter="genre"
+            onSelect={selectGenre}
+          />
         </div>
       </div>
     </div>

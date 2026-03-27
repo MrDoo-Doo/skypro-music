@@ -13,149 +13,82 @@ import { useEffect, useState } from 'react';
 import { TrackType } from '@/sharedTypes/sharedTypes';
 import { AxiosError } from 'axios';
 import CenterBlock from '@/components/CenterBlock/CenterBlock';
-import { useAppSelector } from '@/store/store';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { cleanFilters } from '@/store/features/trackSlice';
 
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
-  const { fetchIsLoading, allTracks, fetchError } = useAppSelector(
-    (state) => state.tracks,
-  );
+  const dispatch = useAppDispatch();
+  const {
+    fetchIsLoading,
+    allTracks,
+    fetchError,
+    filteredTracks,
+    filters,
+    search,
+  } = useAppSelector((state) => state.tracks);
   const [isLoading, setIsLoading] = useState(true);
   const [errorRes, setErrorRes] = useState<string | null>(null);
   const [playlistName, setPlaylistName] = useState('');
   const [tracks, setTracks] = useState<TrackType[]>([]);
+  const [playlist, setPlaylist] = useState<TrackType[]>([]);
   const id = params.id;
 
   useEffect(() => {
-    setIsLoading(true);
-    if (!fetchIsLoading && allTracks.length) {
-      getSelectionTracks(id)
-        .then((res) => {
-          setPlaylistName(res.data.name);
-          const tracksID: number[] = res.data.items;
-          const filteredTracks = allTracks.filter((el) =>
-            tracksID.includes(el._id),
-          );
-          setTracks(filteredTracks);
-        })
-        .catch((error) => {
-          if (error instanceof AxiosError) {
-            if (error.response) {
-              setErrorRes(error.response.data);
-            } else if (error.request) {
-              setErrorRes('Неполадки с интернет-соединением');
-            } else {
-              setErrorRes('Неизвестная ошибка');
+    setTimeout(() => {
+      setIsLoading(true);
+      dispatch(cleanFilters());
+      if (!fetchIsLoading && allTracks.length) {
+        getSelectionTracks(id)
+          .then((res) => {
+            setPlaylistName(res.data.name);
+            const tracksID: number[] = res.data.items;
+            const selectedTracks = allTracks.filter((el) =>
+              tracksID.includes(el._id),
+            );
+            setPlaylist(selectedTracks);
+          })
+          .catch((error) => {
+            if (error instanceof AxiosError) {
+              if (error.response) {
+                setErrorRes(error.response.data);
+              } else if (error.request) {
+                setErrorRes('Неполадки с интернет-соединением');
+              } else {
+                setErrorRes('Неизвестная ошибка');
+              }
             }
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+    }, 0);
   }, [fetchIsLoading]);
 
-  // const getSelectionTracksFun = () => {
-  //   setIsLoading(true);
-  //   if (!fetchIsLoading && allTracks.length) {
-  //     getSelectionTracks(id)
-  //       .then((res) => {
-  //         setPlaylistName(res.data.name);
-  //         const tracksID: number[] = res.data.items;
-  //         const filteredTracks = allTracks.filter((el) =>
-  //           tracksID.includes(el._id),
-  //         );
-  //         setTracks(filteredTracks);
-  //       })
-  //       .catch((error) => {
-  //         if (error instanceof AxiosError) {
-  //           if (error.response) {
-  //             setErrorRes(error.response.data);
-  //           } else if (error.request) {
-  //             setErrorRes('Неполадки с интернет-соединением');
-  //           } else {
-  //             setErrorRes('Неизвестная ошибка');
-  //           }
-  //         }
-  //       })
-  //       .finally(() => {
-  //         setIsLoading(false);
-  //       });
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getSelectionTracksFun();
-  // }, []);
-  // const params = useParams<{ id: string }>();
-  // const [tracks, setTracks] = useState<TrackType[]>([]);
-  // const [tracksID, setTracksID] = useState<number[]>([]);
-  // const [playlistName, setPlaylistName] = useState('');
-  // const [error, setError] = useState('');
-
-  // const getSelectionTracksFun = () => {
-  //   getSelectionTracks(params.id)
-  //     .then((res) => {
-  //       setPlaylistName(res.name);
-  //       setTracksID(res.items);
-  //     })
-  //     .catch((error) => {
-  //       if (error instanceof AxiosError) {
-  //         if (error.response) {
-  //           setError(error.response.data);
-  //         } else if (error.request) {
-  //           setError('Неполадки с интернет-соединением');
-  //         } else {
-  //           setError('Неизвестная ошибка');
-  //         }
-  //       }
-  //     })
-  //     .finally(() => {
-  //       setError('');
-  //     });
-  // };
-
-  // const getTracksFun = () => {
-  //   getTracks()
-  //     .then((res) => {
-  //       const filteredTracks = res.filter((track) =>
-  //         tracksID.includes(track._id),
-  //       );
-  //       setTracks(filteredTracks);
-  //     })
-  //     .catch((error) => {
-  //       if (error instanceof AxiosError) {
-  //         if (error.response) {
-  //           setError(error.response.data);
-  //         } else if (error.request) {
-  //           setError('Неполадки с интернет-соединением');
-  //         } else {
-  //           setError('Неизвестная ошибка');
-  //         }
-  //       }
-  //     })
-  //     .finally(() => {
-  //       setError('');
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getSelectionTracksFun();
-  // }, []);
-
-  // useEffect(() => {
-  //   if (tracksID.length > 0) {
-  //     getTracksFun();
-  //   }
-  // }, [tracksID]);
+  useEffect(() => {
+    if (playlist) {
+      const currentPlaylist =
+        filters.author.length ||
+        filters.genres.length ||
+        search.length ||
+        filters.year !== 'По умолчанию'
+          ? filteredTracks
+          : playlist;
+      setTimeout(() => {
+        setTracks(currentPlaylist);
+      });
+    }
+  }, [filteredTracks, playlist]);
 
   return (
     <>
       <CenterBlock
         tracks={tracks}
+        playlist={playlist}
+        title={playlistName}
         errorRes={errorRes || fetchError}
         isLoading={isLoading}
-        title={playlistName}
       />
     </>
   );
